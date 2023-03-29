@@ -22,4 +22,5 @@ RUN groupadd --gid 1000 app \
     && mkdir /app/backup
 USER app
 WORKDIR /app
+ADD backup.sh /app/backup.sh
 CMD ["/bin/bash","-c","/app/backup.sh"]

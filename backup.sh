@@ -4,7 +4,9 @@ set -e
 # Define the status update URL
 status_url=${STATUS_URL}
 
-trap "curl -fs '$status_url?status=down&msg=FAILED'" ERR
+if [ -n "$status_url" ]; then
+  trap "curl -fs '$status_url?status=down&msg=FAILED'" ERR
+fi
 
 mkdir -p backup
 
@@ -15,7 +17,7 @@ backup_filename="$BACKUP_SOURCE-$(date +%Y%m%d%H%M%S)"
 case $BACKUP_SOURCE in
   POSTGRES)
     pbc_namespace=elbgoods/prg/crewzone
-    psql -tc "SELECT datname FROM pg_database WHERE datistemplate = false AND (datname LIKE 'dev_%' OR datname LIKE 'staging_%' OR datname LIKE 'production_%');" | while read database; do
+    psql -tc "$PG_DB_SELECT" | while read database; do
       echo "Backing up $database"
       # database is not empty
       if [ -n "$database" ]; then
@@ -46,7 +48,6 @@ esac
 
 # Upload the backup to Proxmox backup client
 proxmox-backup-client backup $BACKUP_ID.pxar:/app/backup --backup-id $BACKUP_ID --ns $PBC_NAMESPACE --skip-lost-and-found
-
 
 # Send a status update
 if [ -n "$status_url" ]; then
