@@ -26,5 +26,6 @@ ADD ./backup.sh /app/backup.sh
 
 USER root
 RUN chown -R app:app /app \
-  && chmod -R 755 /app
+  && chmod -R 755 /app \
+USER app
 CMD ["/bin/bash","-c","/app/backup.sh"]
