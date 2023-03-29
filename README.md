@@ -38,7 +38,7 @@ The script uses the following environment variables:
 
 1. PostgreSQL
 2. MongoDB
-.3 MinIO
+3. MinIO
 The BACKUP_SOURCE environment variable can be used to specify the backup source for your backup job. If you need to backup other types of data sources, you can modify the script or create a new Docker image that extends the Proxmox Backup Client image and adds support for your specific backup source.
 
 ### Usage
