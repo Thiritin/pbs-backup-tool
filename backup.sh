@@ -15,7 +15,7 @@ mkdir -p backup
 # Check the backup source and run the appropriate backup client
 case $BACKUP_SOURCE in
   POSTGRES)
-    psql -tc "$PG_DB_SELECT" | while read database; do
+    psql -tc "$PGDBSELECT" | while read -r database; do
       echo "Backing up $database"
       # database is not empty
       if [ -n "$database" ]; then
