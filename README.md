@@ -39,7 +39,7 @@ To use the Proxmox Backup Client Docker image, you can follow these steps:
 
 1. Pull the Docker image from Docker Hub using the following command:
 ```
-docker pull thiritin/proxmox-backup-client:v1.0.0
+docker pull thiritin/proxmox-backup-client:1.0.1
 ```
 2. Create a Docker container using the following command:
 ```
