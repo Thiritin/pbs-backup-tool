@@ -44,7 +44,7 @@ case $BACKUP_SOURCE in
 esac
 
 # Upload the backup to Proxmox backup client
-proxmox-backup-client backup $BACKUP_ID.pxar:/app/backup --backup-id $BACKUP_ID --ns $PBC_NAMESPACE --skip-lost-and-found
+proxmox-backup-client backup $BACKUP_ID.pxar:/app/backup --backup-id "$BACKUP_ID" --ns "$PBC_NAMESPACE" --skip-lost-and-found
 
 # Send a status update
 if [ -n "$status_url" ]; then
