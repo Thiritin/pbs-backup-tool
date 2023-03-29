@@ -16,7 +16,6 @@ backup_filename="$BACKUP_SOURCE-$(date +%Y%m%d%H%M%S)"
 # Check the backup source and run the appropriate backup client
 case $BACKUP_SOURCE in
   POSTGRES)
-    pbc_namespace=elbgoods/prg/crewzone
     psql -tc "$PG_DB_SELECT" | while read database; do
       echo "Backing up $database"
       # database is not empty
@@ -27,7 +26,6 @@ case $BACKUP_SOURCE in
     done
     ;;
   MINIO)
-    pbc_namespace=elbgoods/prg/crewzone
     # Use the minio client (mc) to create a backup of the bucket
     mc alias set crewzone $S3_ENDPOINT $S3_ACCESS $S3_SECRET --api S3v4
     # mirror each s3 bucket to a local directory
@@ -36,7 +34,6 @@ case $BACKUP_SOURCE in
     done
     ;;
   MONGO)
-    pbc_namespace=elbgoods/prg/crewzone
     # Use the mongodump tool to create a backup of the database
     mongodump --uri "$MONGO_URL" --out=/app/backup
     ;;
