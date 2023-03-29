@@ -34,6 +34,13 @@ The script uses the following environment variables:
 | `BACKUP_SOURCE` | The source for the backup job (e.g. PostgreSQL, MongoDB). |
 | `PBC_NAMESPACE` | The namespace for the backup job.
 
+### Supported Backup Sources
+
+1. PostgreSQL
+2. MongoDB
+.3 MinIO
+The BACKUP_SOURCE environment variable can be used to specify the backup source for your backup job. If you need to backup other types of data sources, you can modify the script or create a new Docker image that extends the Proxmox Backup Client image and adds support for your specific backup source.
+
 ### Usage
 
 To use the Proxmox Backup Client Docker image, you can follow these steps:
@@ -69,7 +76,7 @@ In this command, you need to replace the environment variables with the appropri
 
 3. If you need to customize the script, you can create a new Docker image that extends the Proxmox Backup Client image and modifies the script accordingly. Here's an example Dockerfile that modifies the script:
 ```
-FROM thiritin/proxmox-backup-client:v1.0.0
+FROM thiritin/proxmox-backup-client
 
 COPY myscript.sh /app/myscript.sh
 
