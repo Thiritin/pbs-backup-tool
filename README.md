@@ -1,14 +1,6 @@
 ## Proxmox Backup Client - Docker Image Documentation
 
-This Docker image contains a bash script that is designed to be run inside a Docker container and performs some specific tasks related to your Proxmox Backup Client application.
-
-### Purpose
-
-The script performs the following tasks:
-
-1. Installs required dependencies for the application.
-2. Executes some configuration commands.
-3. Starts the application.
+This Docker image contains a backup script to export data from several sources into a backup folder, and then uploads this data to the proxmox backup server.
 
 ### Variables
 
