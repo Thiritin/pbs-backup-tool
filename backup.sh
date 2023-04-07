@@ -13,8 +13,13 @@ fi
 mkdir -p backup
 
 # Check the backup source and run the appropriate backup client
+#
+# Multi: refers to backups that will either query for a list of databases or buckets
+# Single: refers to backups that will only backup a single database or bucket
+# Use file if you want to manually create your backup and just have it backuped. Mount it in the backup container and use the FILE option.
+#
 case $BACKUP_SOURCE in
-  POSTGRES)
+  POSTGRES_MULTI)
     psql -tc "$PGDBSELECT" | while read -r database; do
       echo "Backing up $database"
       # database is not empty
@@ -24,7 +29,7 @@ case $BACKUP_SOURCE in
       fi
     done
     ;;
-  MINIO)
+  MINIO_MULTI)
     # Use the minio client (mc) to create a backup of the bucket
     # shellcheck disable=SC2086
     mc alias set crewzone $S3_ENDPOINT "$S3_ACCESS" $S3_SECRET --api S3v4
@@ -33,14 +38,19 @@ case $BACKUP_SOURCE in
       mc mirror --overwrite crewzone/$bucket ./backup/$bucket
     done
     ;;
-  MONGO)
+  MONGO_SINGLE)
     # Use the mongodump tool to create a backup of the database
     mongodump --uri "$MONGO_URL" --out=/app/backup
+    ;;
+  FILE)
+    # Use the mongodump tool to create a backup of the database
+    echo "Performing file Backup"
     ;;
   *)
     echo "Invalid backup source: $BACKUP_SOURCE"
     exit 1
     ;;
+
 esac
 
 # Upload the backup to Proxmox backup client
