@@ -96,5 +96,7 @@ if [ -n "$status_url" ]; then
   curl -fs "$status_url?status=up&msg=OK"
 fi
 
-# Clean up the backup file
-rm -rf /app/backup/*
+# Clean up the backup file if REMOVE_AFTER_BACKUP is set to TRUE
+if [ "$REMOVE_AFTER_BACKUP" = "TRUE" ]; then
+  rm -rf /app/backup/*
+fi
