@@ -67,10 +67,10 @@ case $BACKUP_SOURCE in
   MINIO_MULTI)
     # Use the minio client (mc) to create a backup of the bucket
     # shellcheck disable=SC2086
-    mc alias set crewzone $S3_ENDPOINT "$S3_ACCESS" $S3_SECRET --api S3v4
+    mc alias set s3backup $S3_ENDPOINT "$S3_ACCESS" $S3_SECRET --api S3v4
     # mirror each s3 bucket to a local directory
-    mc ls crewzone | awk '{print $5}' | while read bucket; do
-      mc mirror --overwrite crewzone/$bucket /app/backup/$bucket
+    mc ls s3backup | awk '{print $5}' | while read bucket; do
+      mc mirror --overwrite s3backup/$bucket /app/backup/$bucket
     done
     ;;
   MONGO_SINGLE)
