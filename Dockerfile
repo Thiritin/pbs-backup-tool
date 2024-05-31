@@ -1,4 +1,4 @@
-FROM debian:stable
+FROM debian:bullseye
 RUN apt-get update \
     && apt-get install gnupg wget curl -y \
     && wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | apt-key add - \
@@ -6,7 +6,7 @@ RUN apt-get update \
     && echo "deb http://repo.mongodb.org/apt/debian bullseye/mongodb-org/6.0 main" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list \
     && echo "deb http://download.proxmox.com/debian/pbs-client bullseye main" | tee /etc/apt/sources.list.d/pbs.list \
     && apt-get update \
-    && apt-get --no-install-recommends install postgresql-client mongodb-org-tools mariadb-client proxmox-backup-client -y \
+    && apt-get --no-install-recommends install postgresql-client-13 mongodb-org-tools mariadb-client proxmox-backup-client -y \
     && apt-get remove wget gnupg -y \
     && apt-get autoremove -y \
     && apt-get clean
