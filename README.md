@@ -6,25 +6,25 @@ This Docker image contains a backup script to export data from several sources i
 
 The script uses the following environment variables:
 
-| Variable name | Purpose |
-| --- | --- |
-| `PBS_REPOSITORY` | The repository to store the backup. |
-| `PBS_PASSWORD` | The password for the backup repository. |
-| `PBS_ENCRYPTION_PASSWORD` | The encryption password for the backup. |
-| `PBS_FINGERPRINT` | The fingerprint of the backup repository. |
-| `PGHOST` | The hostname or IP address of the PostgreSQL server. |
-| `PGPORT` | The port number on which the PostgreSQL server is listening. |
-| `PGDATABASE` | The name of the PostgreSQL database. |
-| `PGPASSWORD` | The password for connecting to the PostgreSQL server. |
-| `PGUSER` | The username for connecting to the PostgreSQL server. |
+| Variable name | Purpose                                                            |
+| --- |--------------------------------------------------------------------|
+| `PBS_REPOSITORY` | The repository to store the backup.                                |
+| `PBS_PASSWORD` | The password for the backup repository.                            |
+| `PBS_ENCRYPTION_PASSWORD` | The encryption password for the backup.                            |
+| `PBS_FINGERPRINT` | The fingerprint of the backup repository.                          |
+| `PGHOST` | The hostname or IP address of the PostgreSQL server.               |
+| `PGPORT` | The port number on which the PostgreSQL server is listening.       |
+| `PGDATABASE` | The name of the PostgreSQL database.                               |
+| `PGPASSWORD` | The password for connecting to the PostgreSQL server.              |
+| `PGUSER` | The username for connecting to the PostgreSQL server.              |
 | `PGDBSELECT` | The SQL command used to select the PostgreSQL databases to backup. |
-| `S3_ENDPOINT` | The endpoint of the S3-compatible storage. |
-| `S3_ACCESS` | The access key for the S3-compatible storage. |
-| `S3_SECRET` | The secret key for the S3-compatible storage. |
-| `MONGO_URL` | The URL for the MongoDB server. |
-| `BACKUP_ID` | The ID for the backup job. |
-| `BACKUP_SOURCE` | The source for the backup job (e.g. PostgreSQL, MongoDB). |
-| `PBC_NAMESPACE` | The namespace for the backup job.
+| `S3_ENDPOINT` | The endpoint of the S3-compatible storage.                         |
+| `S3_ACCESS` | The access key for the S3-compatible storage.                      |
+| `S3_SECRET` | The secret key for the S3-compatible storage.                      |
+| `MONGO_URL` | The URL for the MongoDB server.                                    |
+| `BACKUP_ID` | The ID for the backup job.                                         |
+| `BACKUP_SOURCE` | The source for the backup job (e.g. PostgreSQL, MongoDB, MySQL).   |
+| `PBC_NAMESPACE` | The namespace for the backup job.                                  
 
 ### Supported Backup Sources
 
@@ -54,6 +54,12 @@ docker run -d
 -e PGPASSWORD="mypgpassword"
 -e PGUSER="mypguser"
 -e PGDBSELECT="SELECT datname FROM pg_database WHERE datistemplate = false;"
+-e MYSQL_HOST="mysql.example.com"
+-e MYSQL_PORT="3306"
+-e MYSQL_DATABASE="mydatabase"
+-e MYSQL_USER="myuser"
+-e MYSQL_PASSWORD="mypassword"
+-e MYSQL_DBSELECT="SHOW DATABASES;"
 -e S3_ENDPOINT="https://s3.mybackup.com/"
 -e S3_ACCESS="mys3accesskey"
 -e S3_SECRET="mys3secretkey"

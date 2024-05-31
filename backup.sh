@@ -25,9 +25,44 @@ case $BACKUP_SOURCE in
       # database is not empty
       if [ -n "$database" ]; then
         # Use the pg_dump tool to create a backup of the database
-        pg_dump -Fd -v -d "$database" -j 4 -Z0 -f "./backup/$database"
+        pg_dump -Fd -v -d "$database" -j 4 -Z0 -f "/app/backup/$database"
       fi
     done
+    ;;
+  MYSQL_MULTI)
+    # echo mysql result
+    mysql --host=$MYSQL_HOST --user=$MYSQL_USER --password="$MYSQL_PASSWORD" -s -N -e "$MYSQL_DBSELECT" | while read -r database; do
+      # Skip information_schema, performance_schema, and sys databases
+      if [ "$database" = "information_schema" ] || [ "$database" = "performance_schema" ] || [ "$database" = "sys" ]; then
+        continue
+      fi
+      echo "Backing up $database"
+      # database is not empty
+      if [ -n "$database" ]; then
+        # Use the mysqldump tool to create a backup of the database
+        mysqldump --host=$MYSQL_HOST --user=$MYSQL_USER --single-transaction --password="$MYSQL_PASSWORD" --quick --lock-tables=false "$database" > "/app/backup/$database.sql"
+        # Check that the file exists, otherwise throw error
+        if [ ! -f "/app/backup/$database.sql" ]; then
+          echo "Backup failed for $database"
+          exit 1
+        fi
+      fi
+    done
+    ## if no database is found, exit with error
+    if [ ! "$(ls -A /app/backup)" ]; then
+      echo "No databases found"
+      exit 1
+    fi
+    ;;
+  MYSQL_SINGLE)
+    echo "Backing up $MYSQL_DATABASE"
+    # Use the mysqldump tool to create a backup of the database
+    mysqldump --host=$MYSQL_HOST --user=$MYSQL_USER --single-transaction --password="$MYSQL_PASSWORD" --quick --lock-tables=false "$MYSQL_DATABASE" > "/app/backup/$MYSQL_DATABASE.sql"
+    # Check that the file exists, otherwise throw error
+    if [ ! -f "/app/backup/$MYSQL_DATABASE.sql" ]; then
+      echo "Backup failed for $MYSQL_DATABASE"
+      exit 1
+    fi
     ;;
   MINIO_MULTI)
     # Use the minio client (mc) to create a backup of the bucket
@@ -35,7 +70,7 @@ case $BACKUP_SOURCE in
     mc alias set crewzone $S3_ENDPOINT "$S3_ACCESS" $S3_SECRET --api S3v4
     # mirror each s3 bucket to a local directory
     mc ls crewzone | awk '{print $5}' | while read bucket; do
-      mc mirror --overwrite crewzone/$bucket ./backup/$bucket
+      mc mirror --overwrite crewzone/$bucket /app/backup/$bucket
     done
     ;;
   MONGO_SINGLE)
@@ -62,4 +97,4 @@ if [ -n "$status_url" ]; then
 fi
 
 # Clean up the backup file
-rm -rf ./backup/*
+rm -rf /app/backup/*
