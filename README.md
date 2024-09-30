@@ -24,7 +24,8 @@ The script uses the following environment variables:
 | `MONGO_URL` | The URL for the MongoDB server.                                    |
 | `BACKUP_ID` | The ID for the backup job.                                         |
 | `BACKUP_SOURCE` | The source for the backup job (e.g. PostgreSQL, MongoDB, MySQL).   |
-| `PBC_NAMESPACE` | The namespace for the backup job.                                  
+| `PBC_NAMESPACE` | The namespace for the backup job.                                   |
+
 
 ### Supported Backup Sources
 
