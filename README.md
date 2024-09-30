@@ -25,6 +25,7 @@ The script uses the following environment variables:
 | `BACKUP_ID` | The ID for the backup job.                                         |
 | `BACKUP_SOURCE` | The source for the backup job (e.g. PostgreSQL, MongoDB, MySQL).   |
 | `PBC_NAMESPACE` | The namespace for the backup job.                                   |
+| `CHANGE_DETECTION_MODE` | legacy, default or metadata (fastest) |
 
 
 ### Supported Backup Sources
