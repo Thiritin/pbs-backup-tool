@@ -88,8 +88,23 @@ case $BACKUP_SOURCE in
 
 esac
 
-# Upload the backup to Proxmox backup client
-proxmox-backup-client backup $BACKUP_ID.pxar:/app/backup --backup-id "$BACKUP_ID" --ns "$PBC_NAMESPACE" --change-detection-mode=${CHANGE_DETECTION_MODE:legacy} --skip-lost-and-found
+
+if [ "$FOLDERS_SEPERATELY" = "true" ]; then
+    find /app/backup -mindepth 1 -maxdepth 1 -type d | while read folder; do
+        folder_name=$(basename "$folder")
+        proxmox-backup-client backup "$BACKUP_ID-$folder_name.pxar:/app/backup/$folder_name" \
+            --backup-id "$BACKUP_ID-$folder_name" \
+            --ns "$PBC_NAMESPACE" \
+            --change-detection-mode="${CHANGE_DETECTION_MODE:-legacy}" \
+            --skip-lost-and-found
+    done
+else
+    proxmox-backup-client backup "$BACKUP_ID.pxar:/app/backup" \
+        --backup-id "$BACKUP_ID" \
+        --ns "$PBC_NAMESPACE" \
+        --change-detection-mode="${CHANGE_DETECTION_MODE:-legacy}" \
+        --skip-lost-and-found
+fi
 
 # Send a status update
 if [ -n "$status_url" ]; then
