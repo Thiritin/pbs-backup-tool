@@ -1,12 +1,14 @@
-FROM debian:bullseye
+FROM debian:bookworm
 RUN apt-get update \
     && apt-get install gnupg wget curl -y \
     && wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | apt-key add - \
-    && wget https://enterprise.proxmox.com/debian/proxmox-release-bullseye.gpg -O /etc/apt/trusted.gpg.d/proxmox-release-bullseye.gpg \
-    && echo "deb http://repo.mongodb.org/apt/debian bullseye/mongodb-org/6.0 main" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list \
-    && echo "deb http://download.proxmox.com/debian/pbs-client bullseye main" | tee /etc/apt/sources.list.d/pbs.list \
+    && wget https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg -O /etc/apt/trusted.gpg.d/proxmox-release-bookworm.gpg \
+    && echo "deb http://repo.mongodb.org/apt/debian bookworm/mongodb-org/6.0 main" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list \
+    && echo "deb http://download.proxmox.com/debian/pbs-client bookworm main" | tee /etc/apt/sources.list.d/pbs.list \
+    && wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb \
+    && dpkg -i libssl1.1_1.1.0g-2ubuntu4_amd64.deb \
     && apt-get update \
-    && apt-get --no-install-recommends install postgresql-client-13 mongodb-org-tools mariadb-client proxmox-backup-client -y \
+    && apt-get --no-install-recommends install postgresql-client-15 mongodb-database-tools mariadb-client proxmox-backup-client -y \
     && apt-get remove wget gnupg -y \
     && apt-get autoremove -y \
     && apt-get clean
