@@ -8,7 +8,7 @@ RUN apt-get update \
     && wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb \
     && dpkg -i libssl1.1_1.1.0g-2ubuntu4_amd64.deb \
     && apt-get update \
-    && apt-get --no-install-recommends install postgresql-client-15 mongodb-database-tools mariadb-client proxmox-backup-client -y \
+    && apt-get --no-install-recommends install ca-certificates postgresql-client-15 mongodb-database-tools mariadb-client proxmox-backup-client -y \
     && apt-get remove wget gnupg -y \
     && apt-get autoremove -y \
     && apt-get clean
